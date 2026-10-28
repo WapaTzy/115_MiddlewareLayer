@@ -94,18 +94,26 @@ function validateBody(schema) {
 }
 
 // Middleware untuk validasi parameter ID
+function validateIdParam(schema) {
+    return (req, res, next) => {
+        const { error, value } = schema.validate(req.params)
+           
+            if (error) {
+                return errorResponse(
+                    res,
+                    "Parameter tidak valid",
+                    400,
+                    error.details.map(item => ({
+                        field: item.path.join('.'),
+                        message: item.message,
+                    }))
+                )
+            }
+            req.params = value
+            next()
+        }
+    }
 
-app.get("/", async (req, res) => {
-    const result = await pool.query(
-        'SELECT * FROM biodata ORDER BY id'
-    )
-
-    return successResponse(
-        res,
-         'Data berhasil diambil',
-          result.rows
-        )
-})
 
 app.post(
     '/biodata',
