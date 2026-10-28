@@ -37,18 +37,27 @@ app.use((req, res, next) => {
 
 // RESPONSE ENVELOPE
 
+function successResponse(res, message, data, status = 200) {
+  return res.status(status).json({
+    success: true,
+    message,
+    data,
+    error: null,
+  })
+}
+
+function errorResponse(res, message, status, details = null) {
+  return res.status(status).json({
+   success: false,
+    message,
+    data: null,
+    error: details,
+  })
+}
+
 // Joi validation schema 
 
-const biodataSchema = Joi.object({
-    id: Joi.number().integer().positive(),
-    nama: Joi.string().trim().min(2).max(100).required(),
-    nim: Joi.string().trim().min(5).max(20).required(),
-    kelas: Joi.string().trim().min(1).max(20).required(),
-})
 
-const idSchema = Joi.object({
-    id: Joi.number().integer().positive().required(),
-})
 
 // Middleware untuk validasi body
 function validateBody(schema) {
