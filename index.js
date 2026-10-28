@@ -223,7 +223,10 @@ app.put(
             return next(err)
         }
 
+        return errorResponse(
+            res,
+             'Terjadi kesalahan pada server',
+              500,
+        )
+    })
     
-app.listen(port, () => {
-    console.log(`Server berjalan di http://localhost:${port}`)
-})
