@@ -207,22 +207,16 @@ app.put(
     )
 
     // ROUTE TIDAK DITEMUKAN
-   
-
-    // ERROR HANDLER
-    app.use((err, req, res, next) => {
-        console.error(err)
-
-        if (res.headersSent) {
-            return next(err)
-        }
-
+    app.use((req, res) => {
         return errorResponse(
             res,
-             'Terjadi kesalahan pada server',
-              500,
+             'Route tidak ditemukan',
+              404
         )
     })
+
+    // ERROR HANDLER
+  
     
 app.listen(port, () => {
     console.log(`Server berjalan di http://localhost:${port}`)
